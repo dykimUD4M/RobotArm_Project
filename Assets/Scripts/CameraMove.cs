@@ -19,7 +19,6 @@ public class CameraMove : MonoBehaviour
     private List<Info> _cameraPosnRot = new List<Info>();
 
 
-
     int _idx = 0;
     public void CameraMoving(int idx)
     {

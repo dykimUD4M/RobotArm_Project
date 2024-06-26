@@ -16,6 +16,7 @@ public class RobotAxisInfo
 public class RobotArmInfo
 {
     public bool isAir = false;
+    public bool isRedBall = false;
     public List<RobotAxisInfo> axisInfoList;
 }
 
@@ -90,7 +91,6 @@ public class RobotArm : MonoBehaviour
                 _idx = 0;
             TestGetInfo(_idx);
         }
-
         if (Input.GetKeyDown(KeyCode.S))
         {
             TestSave(_idx);
