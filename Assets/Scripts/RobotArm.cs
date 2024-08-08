@@ -24,7 +24,7 @@ public class RobotArm : MonoBehaviour
 {
     private Dictionary<string, Transform> m_robotAxisDictionary = new Dictionary<string, Transform>();
 
-    [SerializeField]
+    [SerializeField,]
     private bool _smoothMoving = false;
     [SerializeField]
     private float _smoothSpeed = 0.2f;
@@ -124,7 +124,7 @@ public class RobotArm : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"There is no axis whose name matches the received data | Name : {info.axisName}");
+                Debug.LogError($"There is no axis whose name matches the received data | Number : {idx}");
             }
         }
 
