@@ -36,9 +36,6 @@ public class RobotArm : MonoBehaviour
     [SerializeField, Header("AirCompressor_Module")]
     private ArmSlide _armSlide;
 
-    private GameObject _ball;
-    private bool _isAir = false;
-
     private void Start()
     {
         RobotArmAxisInit();
@@ -61,13 +58,19 @@ public class RobotArm : MonoBehaviour
         {
             //model 
             for(int i = 0;i<trm.childCount;i++)
-                if (trm.GetChild(i).name.Contains("axis"))
+                if (trm.GetChild(i).name.Contains("a"))
                 {
                     string name = trm.GetChild(i).name.Replace("axis_", "");
                     m_robotAxisDictionary.Add(name, trm.GetChild(i));
                     trm = trm.GetChild(i);
+
+
+                    if(name == "7")
+                        isFind = false;
+
                     break;
                 }
+
 
             if (trm.childCount <= 0)
                 isFind = false;

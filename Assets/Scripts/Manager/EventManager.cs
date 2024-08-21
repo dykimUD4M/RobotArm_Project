@@ -3,16 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EventType
+namespace EventTrigger
 {
-    None,
-    Final
+    public enum EventType
+    {
+        None,
+        Final
+    }
 }
+
 public class EventManager : Singleton<EventManager>
 {
-    private Dictionary<EventType,Action<EventParam>> eventDictionary = new Dictionary<EventType,Action<EventParam>>();
+    private Dictionary<EventTrigger.EventType, Action<EventParam>> eventDictionary = new Dictionary<EventTrigger.EventType, Action<EventParam>>();
 
-    public void ListenEvent(EventType eventName, Action<EventParam> action)
+    public void ListenEvent(EventTrigger.EventType eventName, Action<EventParam> action)
     {
         if (eventDictionary.ContainsKey(eventName))
         {
@@ -24,7 +28,7 @@ public class EventManager : Singleton<EventManager>
         }
     }
 
-    public void RemoveEvent(EventType eventName, Action<EventParam> action)
+    public void RemoveEvent(EventTrigger.EventType eventName, Action<EventParam> action)
     {
         if (eventDictionary.ContainsKey(eventName))
         {
@@ -36,7 +40,7 @@ public class EventManager : Singleton<EventManager>
         }
     }
 
-    public void TriggerEvent(EventType eventName, EventParam param)
+    public void TriggerEvent(EventTrigger.EventType eventName, EventParam param)
     {
         if (eventDictionary.ContainsKey(eventName))
         {
