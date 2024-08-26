@@ -7,23 +7,27 @@ public class ChatPanelUI : MonoBehaviour
 {
     [SerializeField]
     private Transform _content;
+    private GameObject _textTemp;
 
-    private GameObject _textTmep;
+    [SerializeField]
+    private int _poolMaxCnt;
+
     private void Start()
     {
-        _textTmep = _content.GetChild(0).gameObject;
+        _textTemp = _content.GetChild(0).gameObject;
 
-        GameManager.Instance.PoolManager_.CreatePool(_textTmep, 30);
+        for(int i = 0;i< _poolMaxCnt;i++)
+        {
+            Instantiate(_textTemp, _content);
+        }
     }
 
     public void AddText(string text)
     {
+        GameObject go = _content.GetChild(0).gameObject;
+        go.transform.SetParent(transform);
+        go.transform.SetParent(_content);
 
-        if (_content.childCount >= 30)
-            GameManager.Instance.PoolManager_.Push(_content.GetChild(0).GetComponent<Poolable>());
-
-        Poolable go = GameManager.Instance.PoolManager_.Pop(_textTmep, _content);
-
-        go.gameObject.GetComponent<TextMeshProUGUI>().SetText(text);
+        go.GetComponent<TextMeshProUGUI>().SetText(text);
     }
 }

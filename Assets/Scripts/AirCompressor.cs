@@ -9,6 +9,7 @@ public class AirCompressor : MonoBehaviour
 
     [SerializeField]
     private GameObject _equipBall;
+    //private Material _ballMat;
     [SerializeField]
     private GameObject _spawnPhysicBall;
     private bool _isAir = false;
@@ -28,14 +29,14 @@ public class AirCompressor : MonoBehaviour
         set { _isEquip = value;}
     }
 
-    private void Update()
+    private void Awake()
     {
-
+        //_ballMat = _equipBall.GetComponent<Material>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsAir == false) return;
+        //if (IsAir == false) return;
 
         if(other.CompareTag("Ball") && IsEquip == false)
         {
@@ -52,6 +53,11 @@ public class AirCompressor : MonoBehaviour
         IsEquip = true;
     }
 
+    public void ChangeColor()
+    {
+
+    }
+
     public void SpawnBall()
     {
         GameObject go = Instantiate(_spawnPhysicBall);
@@ -65,6 +71,12 @@ public class AirCompressor : MonoBehaviour
         if (_equipBall == null) return;
 
         _equipBall.SetActive(false);
+        StartCoroutine(ReEquipTimer(0.3f));
+    }
+
+    private IEnumerator ReEquipTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
         _isEquip = false;
     }
 }

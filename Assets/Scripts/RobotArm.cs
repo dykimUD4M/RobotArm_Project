@@ -13,6 +13,8 @@ public class RobotAxisInfo
     public Quaternion quaternion = Quaternion.identity;
 }
 
+
+
 [Serializable]
 public class RobotArmInfo
 {
@@ -48,10 +50,11 @@ public class RobotArm : MonoBehaviour
         RobotArmAxisInit();
         LoadMoveData();
         //RotateRobotArm(_idx);
-        
 
+        StartBtn();
         _textMeshProUGUI.SetText(_smoothSpeed.ToString());
     }
+    
 
     public void StartBtn()
     {
@@ -73,9 +76,8 @@ public class RobotArm : MonoBehaviour
         reader.Close();
     }
 
-    private void RotateRobotArm(int idx)
+    private void RotateRobotArm(int idx,float moveTime)
     {
-        Debug.Log(_robotMoveData[idx]);
 
         if (idx >= _robotMoveData.Length - 1)
         {
@@ -95,15 +97,15 @@ public class RobotArm : MonoBehaviour
             if (info.axis == "x")
                 if(num == 5)
                 {
-                    info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num])* -1 + axisOffsetValueList[num], 0, 90), 0.01f);
+                    info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num])* -1 + axisOffsetValueList[num], 0, 90), moveTime);
                 }
                 else
-                    info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0, 0), 0.01f);
+                    info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0, 0), moveTime);
 
             if (info.axis == "y")
-                info.trm.DOLocalRotate(new Vector3(0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0), 0.01f);
+                info.trm.DOLocalRotate(new Vector3(0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0), moveTime);
             if (info.axis == "z")
-                info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num]), 0.01f);
+                info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num]), moveTime);
         }
     }
 
@@ -114,7 +116,7 @@ public class RobotArm : MonoBehaviour
 
             yield return new WaitForSeconds(_smoothSpeed);
             _idx++;
-            RotateRobotArm(_idx);
+            RotateRobotArm(_idx,_smoothSpeed);
 
             //if(_idx >= 10)
             //    _idx = 0;
@@ -159,23 +161,7 @@ public class RobotArm : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.D))
         {
-            _idx++;
-            //if (_idx >= 14)
-            //    _idx = 14;
-            //TestGetInfo(_idx);
-            RotateRobotArm(_idx);
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            _idx--;
-            if (_idx <= 0)
-                _idx = 0;
-            //TestGetInfo(_idx);
-            RotateRobotArm(_idx);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            //TestSave(_idx);
+            StartBtn();
         }
     }
 
