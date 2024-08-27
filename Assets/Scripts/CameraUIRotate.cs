@@ -61,13 +61,24 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             _idx = 3;
         if(_idx >= 4)
             _idx = 0;
-        _uiCameraPivot.DORotate(new Vector3(-49, -_idx * 90, 0), 1);
-
-        _curZAngle = -49;
-        _curYAngle = -_idx * 90;
+        CameraRot(_idx);
 
         _text.SetText(_idx.ToString());
         Debug.Log($"Chanage Camera : {_idx} : {_curYAngle}");
+    }
+
+    public void CameraRot(int idx)
+    {
+        _uiCameraPivot.DORotate(new Vector3(-49, -idx * 90, 0), 1);
+        _curZAngle = -49;
+        _curYAngle = -idx * 90;
+    }
+
+    public void CameraTopRot(int idx)
+    {
+        _uiCameraPivot.DORotate(new Vector3(-70, -270, 0), 1);
+        _curZAngle = -70;
+        _curYAngle = -270;
     }
     private void MouserZoomInOut()
     {
