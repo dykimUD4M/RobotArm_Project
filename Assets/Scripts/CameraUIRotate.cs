@@ -31,7 +31,7 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private Vector2 _curPos;
 
-    private float _cameraDistance = 1f;
+    private float _cameraDistance = 2f;
 
 
     private float _curYAngle = 0;
@@ -49,7 +49,7 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         MouserZoomInOut();
         //MouserLeftClick();
-        //MouserRightClick();
+        MouserRightClick();
     }
 
     int _idx = 0;
@@ -62,8 +62,12 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if(_idx >= 4)
             _idx = 0;
         _uiCameraPivot.DORotate(new Vector3(-49, -_idx * 90, 0), 1);
+
+        _curZAngle = -49;
+        _curYAngle = -_idx * 90;
+
         _text.SetText(_idx.ToString());
-        Debug.Log($"Chanage Camera : {_idx}");
+        Debug.Log($"Chanage Camera : {_idx} : {_curYAngle}");
     }
     private void MouserZoomInOut()
     {
@@ -75,7 +79,7 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             _cameraDistance += _distanceSpeed * Time.deltaTime;
         }
-        _cameraDistance = Mathf.Clamp(_cameraDistance, 0.1f, 1.5f);
+        _cameraDistance = Mathf.Clamp(_cameraDistance, 0.1f, 2.5f);
         _cameraTrm.localPosition = new Vector3(0, 0, _cameraDistance);
     }
 
@@ -85,7 +89,6 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             //Debug.Log("Click");
             _rotateClickPos = _curPos;
-            _clickCameraRot = _uiCameraPivot.rotation;
 
             _yAngle = _curYAngle;
             _zAngle = _curZAngle;
@@ -96,7 +99,7 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             Vector3 moveDir = _curPos - _rotateClickPos;
 
             _curYAngle = _yAngle + (moveDir.x * _rotateMoveScale);
-            _curZAngle = Mathf.Clamp(_zAngle + (moveDir.y * _rotateMoveScale), -60, 60);
+            _curZAngle = Mathf.Clamp(_zAngle + (moveDir.y * _rotateMoveScale), -80, 20);
             //Debug.Log($"yAngle : {_curYAngle} , zAngle : {_curZAngle}");
 
             Quaternion quaternion = Quaternion.Euler(_curZAngle, _curYAngle, 0);

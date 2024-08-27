@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +7,19 @@ using UnityEngine;
 
 public class RobotArmDataPanelUI : MonoBehaviour
 {
+
+    #region LeftPanel
+    [Header("LeftPanel")]
+    [SerializeField]
+    private RectTransform _leftRect;
+    #endregion
+
+
+    #region RightPanel
+    [Header("RightPanel")]
+    [SerializeField]
+    private RectTransform _rightRect;
+
     [SerializeField]
     private TextMeshProUGUI _todayText;
     [SerializeField]
@@ -16,13 +30,37 @@ public class RobotArmDataPanelUI : MonoBehaviour
     private ChatPanelUI _robotArmDataUI;
     [SerializeField]
     private TextMeshProUGUI _machineInfoText;
+    #endregion
 
 
+    #region BottomPanel
+    [Header("BottomPanel")]
+    [SerializeField]
+    private RectTransform _bottomRect;
+    #endregion
+
+    public void MovePanelAnime(RectTransform rect, Vector2 pos,float duration)
+    {
+        rect.DOAnchorPos(pos, duration);
+    }
 
     private void Update()
     {
         TodayUI();
         EnvironmentDataUI(21, 36);
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            MovePanelAnime(_rightRect, new Vector2(0, 0), 0.7f);
+            MovePanelAnime(_leftRect, new Vector2(0, 0), 0.7f);
+            MovePanelAnime(_bottomRect, new Vector2(0, 0), 0.7f);
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            MovePanelAnime(_rightRect, new Vector2(_rightRect.sizeDelta.x, 0), 0.7f);
+            MovePanelAnime(_leftRect, new Vector2(-_rightRect.sizeDelta.x, 0), 0.7f);
+            MovePanelAnime(_bottomRect, new Vector2(0, -_bottomRect.sizeDelta.y), 0.7f);
+        }
     }
 
     public void TodayUI()
