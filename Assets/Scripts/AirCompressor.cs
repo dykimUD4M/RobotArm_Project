@@ -38,11 +38,11 @@ public class AirCompressor : MonoBehaviour
     {
         //if (IsAir == false) return;
 
-        if(other.CompareTag("Ball") && IsEquip == false)
-        {
-            other.gameObject.SetActive(false);
-            Equip();
-        }
+        //if(other.CompareTag("Ball") && IsEquip == false)
+        //{
+        //    other.gameObject.SetActive(false);
+        //    Equip();
+        //}
     }
 
     public void Equip()

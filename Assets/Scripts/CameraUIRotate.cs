@@ -34,8 +34,8 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private float _cameraDistance = 2f;
 
 
-    private float _curYAngle = 0;
-    private float _curZAngle = 0;
+    private float _curYAngle = 90;
+    private float _curZAngle = -49;
     private float _yAngle = 0;
     private float _zAngle = 0;
     private Vector2 _rotateClickPos;
@@ -69,9 +69,16 @@ public class CameraUIRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void CameraRot(int idx)
     {
-        _uiCameraPivot.DORotate(new Vector3(-49, -idx * 90, 0), 1);
-        _curZAngle = -49;
+        _uiCameraPivot.DORotate(new Vector3(-36.6f, -idx * 90, 0), 1);
+        _curZAngle = -36.6f;
         _curYAngle = -idx * 90;
+    }
+
+    public void CameraChangeRotName(string str)
+    {
+        EventParam ep = new EventParam();
+        ep.strParam = $"Change Camera View : {str}";
+        EventManager.TriggerEvent(EventTrigger.EventType.Alarm, ep);
     }
 
     public void CameraTopRot(int idx)

@@ -45,22 +45,84 @@ public class RobotArm : MonoBehaviour
     [SerializeField, Header("AirCompressor_Module")]
     private AirCompressor _airCompressor;
 
+
+
+    private void RobotArmAxisInit()
+    {
+        bool isFind = true;
+        Transform trm = transform;
+        while (isFind)
+        {
+            //model 
+            for (int i = 0; i < trm.childCount; i++)
+            {
+                string[] name = trm.GetChild(i).name.Split("_");
+                if (name.Length == 3)
+                {
+                    trm = trm.GetChild(i);
+                    RobotArmInfo robotArmInfo = new RobotArmInfo();
+                    robotArmInfo.axisNum = int.Parse(name[1]);
+                    robotArmInfo.trm = trm;
+                    robotArmInfo.axis = name[2];
+                    m_robotAxisDictionary.Add(name[1], robotArmInfo);
+
+                    if (name[1] == "6")
+                        isFind = false;
+
+                    break;
+                }
+            }
+
+
+
+            if (trm.childCount <= 0)
+                isFind = false;
+        }
+    }
+
     private void Start()
     {
         RobotArmAxisInit();
         LoadMoveData();
         //RotateRobotArm(_idx);
 
-        StartBtn();
-        _textMeshProUGUI.SetText(_smoothSpeed.ToString());
-    }
-    
 
+        _textMeshProUGUI.SetText(_smoothSpeed.ToString());
+        //StartBtn();
+    }
+
+    Coroutine coroutine;
+    bool isStart = false;
     public void StartBtn()
     {
-        StartCoroutine(RobotCorotine(_smoothSpeed));
+        if (isStart) return;
+        isStart = true;
+        switch(GameManager.Instance.PLAY_MODE)
+        {
+            case GameManager.RobotArmPlayMode.Live:
+                break;
+            case GameManager.RobotArmPlayMode.Simulation:
+                coroutine = StartCoroutine(RobotCorotine(_smoothSpeed));
+                break;
+        }
+        
     }
 
+    public void StopBtn()
+    {
+        if(isStart == false) return;
+        isStart = false;
+
+        if(coroutine != null)
+            StopCoroutine(coroutine);
+    }
+    private void Update()
+    {
+        if (GameManager.Instance.IsPlayGame == false)
+            StopBtn();
+    }
+
+    #region Simulation
     public void AddSmoothSpeed(float value)
     {
         _smoothSpeed += value;
@@ -81,7 +143,7 @@ public class RobotArm : MonoBehaviour
 
         if (idx >= _robotMoveData.Length - 1)
         {
-            _idx = 0;
+            GameManager.Instance.SIMULATION_IDX = 0;
             return;
         }
 
@@ -95,17 +157,24 @@ public class RobotArm : MonoBehaviour
         {
             int num = info.axisNum - 1;
             if (info.axis == "x")
-                if(num == 5)
+            {
+     
+                if (num == 5)
                 {
-                    info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num])* -1 + axisOffsetValueList[num], 0, 90), moveTime);
+                    info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0, 90), moveTime);
                 }
                 else
                     info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0, 0), moveTime);
+            }
+                
 
             if (info.axis == "y")
                 info.trm.DOLocalRotate(new Vector3(0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0), moveTime);
             if (info.axis == "z")
-                info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num]), moveTime);
+                if(num == 4)
+                    info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * 1 + axisOffsetValueList[num]), moveTime);
+                else
+                    info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num]), moveTime);
         }
     }
 
@@ -115,54 +184,16 @@ public class RobotArm : MonoBehaviour
         {
 
             yield return new WaitForSeconds(_smoothSpeed);
-            _idx++;
-            RotateRobotArm(_idx,_smoothSpeed);
+            RotateRobotArm(GameManager.Instance.SIMULATION_IDX, _smoothSpeed);
+            GameManager.Instance.SIMULATION_IDX++;
 
             //if(_idx >= 10)
             //    _idx = 0;
         }
     }
 
-    private void RobotArmAxisInit()
-    {
-        bool isFind = true;
-        Transform trm = transform;
-        while(isFind)
-        {
-            //model 
-            for(int i = 0;i<trm.childCount;i++)
-            {
-                string[] name = trm.GetChild(i).name.Split("_");
-                if (name.Length == 3)
-                {
-                    trm = trm.GetChild(i);
-                    RobotArmInfo robotArmInfo = new RobotArmInfo();
-                    robotArmInfo.axisNum = int.Parse( name[1]);
-                    robotArmInfo.trm = trm;
-                    robotArmInfo.axis = name[2];
-                    m_robotAxisDictionary.Add(name[1], robotArmInfo);
-
-                    if (name[1] == "6")
-                        isFind = false;
-
-                    break;
-                }
-            }
-               
+    #endregion 
 
 
-            if (trm.childCount <= 0)
-                isFind = false;
-        }
-    }
-
-    int _idx = 0;
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.D))
-        {
-            StartBtn();
-        }
-    }
 
 }

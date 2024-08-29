@@ -8,15 +8,16 @@ namespace EventTrigger
     public enum EventType
     {
         None,
+        Alarm,
         Final
     }
 }
 
 public class EventManager : Singleton<EventManager>
 {
-    private Dictionary<EventTrigger.EventType, Action<EventParam>> eventDictionary = new Dictionary<EventTrigger.EventType, Action<EventParam>>();
+    private static Dictionary<EventTrigger.EventType, Action<EventParam>> eventDictionary = new Dictionary<EventTrigger.EventType, Action<EventParam>>();
 
-    public void ListenEvent(EventTrigger.EventType eventName, Action<EventParam> action)
+    public static void ListenEvent(EventTrigger.EventType eventName, Action<EventParam> action)
     {
         if (eventDictionary.ContainsKey(eventName))
         {
@@ -28,7 +29,7 @@ public class EventManager : Singleton<EventManager>
         }
     }
 
-    public void RemoveEvent(EventTrigger.EventType eventName, Action<EventParam> action)
+    public static void RemoveEvent(EventTrigger.EventType eventName, Action<EventParam> action)
     {
         if (eventDictionary.ContainsKey(eventName))
         {
@@ -40,7 +41,7 @@ public class EventManager : Singleton<EventManager>
         }
     }
 
-    public void TriggerEvent(EventTrigger.EventType eventName, EventParam param)
+    public static void TriggerEvent(EventTrigger.EventType eventName, EventParam param)
     {
         if (eventDictionary.ContainsKey(eventName))
         {
