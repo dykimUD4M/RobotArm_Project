@@ -10271,7 +10271,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.937
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -18156,7 +18156,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.937
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -27658,7 +27658,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.937
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -37248,7 +37248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca1e96e1eed5d8747807320424d7bd81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _smoothMoving: 0
   _smoothSpeed: 0.4
   _textMeshProUGUI: {fileID: 88227159}
   _chatPanelUI: {fileID: 694152962}
@@ -41994,6 +41993,7 @@ MonoBehaviour:
   PLAYTIME: 0
   PLAY_MODE: 2
   IsPlayGame: 0
+  LIVE_DATA: 
 --- !u!1001 &1390293458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49134,7 +49134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1632944370
 MonoBehaviour:
   m_ObjectHideFlags: 0
