@@ -60,12 +60,21 @@ public class GameManager : Singleton<GameManager>
         EventManager.TriggerEvent(EventTrigger.EventType.Alarm, ep);
     }
 
+    public string LIVE_DATA = "";
+
     private void Update()
     {
         if(IsPlayGame)
         {
             PLAYTIME += Time.deltaTime;
+            if (PLAY_MODE == RobotArmPlayMode.Live)
+            {
+                LIVE_DATA = ClientManager.Instance.GetClientData(0);
+                Debug.Log(LIVE_DATA);
+            }
         }
+
+
     }
 
     public void Quit()

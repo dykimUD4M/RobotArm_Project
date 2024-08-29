@@ -52,6 +52,10 @@ public class RobotArmDataPanelUI : MonoBehaviour
     {
         StreamReader sr = new StreamReader($"{Application.dataPath}/Save/UIData.txt");
         _uiDataStr = sr.ReadToEnd().Split("\n");
+
+        MovePanelAnime(_rightRect, new Vector2(0, 0), 0.7f);
+        MovePanelAnime(_leftRect, new Vector2(0, 0), 0.7f);
+        MovePanelAnime(_bottomRect, new Vector2(_bottomRect.anchoredPosition.x, 0), 0.7f);
     }
 
     public void MovePanelAnime(RectTransform rect, Vector2 pos,float duration)

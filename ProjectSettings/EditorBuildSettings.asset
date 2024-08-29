@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/LoadingScene.unity
+    guid: bc0dfffed9f34b1469058be021227728
+  - enabled: 1
     path: Assets/Scenes/RobotArm.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

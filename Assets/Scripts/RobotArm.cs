@@ -27,8 +27,8 @@ public class RobotArm : MonoBehaviour
 {
     private Dictionary<string, RobotArmInfo> m_robotAxisDictionary = new Dictionary<string, RobotArmInfo>();
 
-    [SerializeField,]
-    private bool _smoothMoving = false;
+    //[SerializeField,]
+    //private bool _smoothMoving = false;
     [SerializeField]
     private float _smoothSpeed = 0.2f;
     [SerializeField]
