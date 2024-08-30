@@ -113,7 +113,7 @@ public class RobotArmDataPanelUI : MonoBehaviour
     {
         string[] datas = GameManager.Instance.LIVE_UI_DATA.Split(",");
 
-        if (datas.Length <= 0) return;
+        if (datas.Length <= 1 ) return;
 
         DataSetting(datas);
     }

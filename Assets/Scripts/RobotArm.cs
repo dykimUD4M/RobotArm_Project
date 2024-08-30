@@ -116,6 +116,7 @@ public class RobotArm : MonoBehaviour
         if(coroutine != null)
             StopCoroutine(coroutine);
     }
+    string chatStr = "";
     private void Update()
     {
         if (GameManager.Instance.IsPlayGame == false)
@@ -124,7 +125,15 @@ public class RobotArm : MonoBehaviour
         if(isStart&&GameManager.Instance.PLAY_MODE == GameManager.RobotArmPlayMode.Live)
         {
             if (GameManager.Instance.LIVE_ARM_DATA == "") return;
-            RotateRobotArm(GameManager.Instance.LIVE_ARM_DATA.Split(","), 0.1f);
+            string[] datas = GameManager.Instance.LIVE_ARM_DATA.Split(",");
+            if (datas.Length <= 1) return;
+
+            if (chatStr != GameManager.Instance.LIVE_ARM_DATA)
+            {
+                chatStr = GameManager.Instance.LIVE_ARM_DATA;
+                _chatPanelUI.AddText(chatStr);
+                RotateRobotArm(GameManager.Instance.LIVE_ARM_DATA.Split(","), 0.1f);
+            }
         }
     }
 

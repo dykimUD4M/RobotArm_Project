@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using System.Text;
 
 public class Client : MonoBehaviour
 {
@@ -13,9 +14,10 @@ public class Client : MonoBehaviour
     public int m_Port = 1470;
     public ToServerPacket m_SendPacket = new ToServerPacket();
     public ToClientPacket m_ReceivePacket = new ToClientPacket();
+    public string m_getData;
     //private IPEndPoint m_ServerIpEndPoint;
-    
 
+    public bool m_isFail = false;
 
     void Update()
     {
@@ -28,7 +30,7 @@ public class Client : MonoBehaviour
         CloseClient();
     }
 
-    public void InitClient(string ip,int port,Action connectCallback)
+    public void InitClient(string ip,int port,Action connectCallback,Action failCallback)
     {
         m_Ip = ip;
         m_Port = port;
@@ -38,9 +40,21 @@ public class Client : MonoBehaviour
 
         //m_ServerIpEndPoint = new IPEndPoint(IPAddress.Parse(m_Ip), m_Port);
         m_Client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        m_Client.Connect(m_Ip, m_Port);
+        try
+        {
+            m_Client.Connect(m_Ip, m_Port);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+            Debug.LogError($"IP : {m_Ip} Port : {m_Port}");
+            failCallback?.Invoke();
+            m_isFail = true;
+            return;
+        }
 
-        connectCallback.Invoke();
+        m_isFail = false;
+        connectCallback?.Invoke();
         //m_Client.Connect(m_ServerIpEndPoint);
     }
 
@@ -73,6 +87,8 @@ public class Client : MonoBehaviour
 
     void Receive()
     {
+        if (m_isFail) return;
+
         int receive = 0;
         if (m_Client.Available != 0)
         {
@@ -90,9 +106,11 @@ public class Client : MonoBehaviour
             }
 
             m_ReceivePacket = ByteArrayToStruct<ToClientPacket>(packet);
+            m_getData = Encoding.Default.GetString(packet);
 
             if (receive > 0)
             {
+                
                 DoReceivePacket(); // 받은 값 처리
             }
         }
@@ -109,7 +127,7 @@ public class Client : MonoBehaviour
         //출력: m_IntArray[0] = 7 m_IntArray[1] = 47 FloatlVariable = 2020 StringlVariable = Coder ZeroBoolVariable = True IntlVariable = 13 
     }
 
-    void CloseClient()
+    public void CloseClient()
     {
         if (m_Client != null)
         {

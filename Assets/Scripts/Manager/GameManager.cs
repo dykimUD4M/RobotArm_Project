@@ -71,9 +71,10 @@ public class GameManager : Singleton<GameManager>
             PLAYTIME += Time.deltaTime;
             if (PLAY_MODE == RobotArmPlayMode.Live)
             {
-                LIVE_UI_DATA = ClientManager.Instance.GetClientData(1);
                 LIVE_ARM_DATA = ClientManager.Instance.GetClientData(0);
-                Debug.Log(LIVE_UI_DATA);
+                LIVE_UI_DATA = ClientManager.Instance.GetClientData(1);
+                Debug.Log($"LIVE_ARM_DATA : {LIVE_ARM_DATA}");
+                Debug.Log($"LIVE_UI_DATA : {LIVE_UI_DATA}");
             }
         }
     }
