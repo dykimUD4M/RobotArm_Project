@@ -30,7 +30,7 @@ public class Client : MonoBehaviour
         CloseClient();
     }
 
-    public void InitClient(string ip,int port,Action connectCallback,Action failCallback)
+    public async void InitClient(string ip,int port,Action connectCallback,Action failCallback)
     {
         m_Ip = ip;
         m_Port = port;
@@ -42,7 +42,7 @@ public class Client : MonoBehaviour
         m_Client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         try
         {
-            m_Client.Connect(m_Ip, m_Port);
+            await m_Client.ConnectAsync(m_Ip, m_Port);
         }
         catch (Exception e)
         {
