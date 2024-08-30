@@ -120,6 +120,12 @@ public class RobotArm : MonoBehaviour
     {
         if (GameManager.Instance.IsPlayGame == false)
             StopBtn();
+
+        if(isStart&&GameManager.Instance.PLAY_MODE == GameManager.RobotArmPlayMode.Live)
+        {
+            if (GameManager.Instance.LIVE_ARM_DATA == "") return;
+            RotateRobotArm(GameManager.Instance.LIVE_ARM_DATA.Split(","), 0.1f);
+        }
     }
 
     #region Simulation
@@ -153,12 +159,17 @@ public class RobotArm : MonoBehaviour
 
         string[] datas = _robotMoveData[idx].Replace("(","").Replace(")","").Split(",");
 
-        foreach(RobotArmInfo info in m_robotAxisDictionary.Values)
+        RotateRobotArm(datas,moveTime);
+    }
+
+    private void RotateRobotArm(string[] datas,float moveTime)
+    {
+        foreach (RobotArmInfo info in m_robotAxisDictionary.Values)
         {
             int num = info.axisNum - 1;
             if (info.axis == "x")
             {
-     
+
                 if (num == 5)
                 {
                     info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0, 90), moveTime);
@@ -166,12 +177,12 @@ public class RobotArm : MonoBehaviour
                 else
                     info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0, 0), moveTime);
             }
-                
+
 
             if (info.axis == "y")
                 info.trm.DOLocalRotate(new Vector3(0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0), moveTime);
             if (info.axis == "z")
-                if(num == 4)
+                if (num == 4)
                     info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * 1 + axisOffsetValueList[num]), moveTime);
                 else
                     info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num]), moveTime);

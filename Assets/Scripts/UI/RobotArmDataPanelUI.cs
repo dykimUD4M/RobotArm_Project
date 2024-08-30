@@ -19,17 +19,27 @@ public class RobotArmDataPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _minText;
     [SerializeField] private TextMeshProUGUI _hourText;
 
-    [SerializeField]
+    [SerializeField] private Slider _workQuantitySlider;
+    [SerializeField] private TextMeshProUGUI _workQuantityText;
+    [SerializeField] private Slider _errorQuantitySlider;
+    [SerializeField] private TextMeshProUGUI _errorQuantityText;
+    [SerializeField] private Slider _defectiveProductSlider;
+    [SerializeField] private TextMeshProUGUI _defectiveProductText;
+    [SerializeField] private Slider _acceptanceSlider;
+    [SerializeField] private TextMeshProUGUI _acceptanceText;
 
+
+    [SerializeField] private Slider _recognitionErrorQuantitySlider;
+    [SerializeField] private TextMeshProUGUI _recognitionErrorQuantityText;
     #endregion
 
 
     #region RightPanel
     [Header("RightPanel")]
+    [SerializeField]
     private RectTransform _rightRect;
 
     private string[] _uiDataStr;
-
     [SerializeField] private TextMeshProUGUI _todayText;
     [SerializeField] private TextMeshProUGUI _timeText;
     [SerializeField] private TextMeshProUGUI _temperatureText;
@@ -39,6 +49,7 @@ public class RobotArmDataPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _powerConsumptionText;
     [SerializeField] private ChatPanelUI _robotArmDataUI;
     [SerializeField] private TextMeshProUGUI _machineInfoText;
+
     #endregion
 
 
@@ -76,14 +87,13 @@ public class RobotArmDataPanelUI : MonoBehaviour
                 case GameManager.RobotArmPlayMode.None:
                     break;
                 case GameManager.RobotArmPlayMode.Live:
+                    LiveDataSetting();
                     break;
                 case GameManager.RobotArmPlayMode.Simulation:
                     SimulationUIValue();
                     break;
             }
         }
-
-
 
         if(Input.GetMouseButtonDown(0))
         {
@@ -99,13 +109,33 @@ public class RobotArmDataPanelUI : MonoBehaviour
         }
     }
 
+    private void LiveDataSetting()
+    {
+        string[] datas = GameManager.Instance.LIVE_UI_DATA.Split(",");
+
+        if (datas.Length <= 0) return;
+
+        DataSetting(datas);
+    }
+
     private void SimulationUIValue()
     {
         if (GameManager.Instance.SIMULATION_IDX >= _uiDataStr.Length) return;
 
         string[] datas = _uiDataStr[GameManager.Instance.SIMULATION_IDX].Split(',');
+        DataSetting(datas);
+    }
+
+    private void DataSetting(string[] datas)
+    {
         EnvironmentDataUI(float.Parse(datas[0]), float.Parse(datas[1]));
         PowerDataUI(float.Parse(datas[2]));
+
+        WorkQuantityDataUI(0, int.Parse(datas[3]));
+        ErrorQuantityDataUI(int.Parse(datas[4]), int.Parse(datas[3]));
+        AcceptanceDataUI(0, 10);
+        DefectiveProductDataUI(0, 10);
+        RecognitionErrorQuantityDataUI(int.Parse(datas[5]), int.Parse(datas[3]));
     }
 
     public void TodayUI()
@@ -130,6 +160,37 @@ public class RobotArmDataPanelUI : MonoBehaviour
     public void RobotMoveDataUI(string str)
     {
         _robotArmDataUI.AddText(str);
+    }
+
+    public void WorkQuantityDataUI(int cnt, int maxCnt)
+    {
+        _workQuantitySlider.value = (float)cnt / (float)maxCnt;
+        _workQuantityText.SetText($"완료:{cnt}/전체:{maxCnt}");
+    }
+
+    public void ErrorQuantityDataUI(int errorCnt, int maxCnt)
+    {
+        _errorQuantitySlider.value = (float)errorCnt / (float)maxCnt;
+        _errorQuantityText.SetText($"오류:{errorCnt}/전체:{maxCnt}");
+    }
+    public void AcceptanceDataUI(int cnt, int maxCnt)
+    {
+        float value = Mathf.Clamp(cnt / maxCnt, 0, 1);
+        _acceptanceSlider.value = value;
+        _acceptanceText.SetText($"{(int)(value * 100)}%");
+    }
+
+    public void DefectiveProductDataUI(int cnt, int maxCnt)
+    {
+        float value = Mathf.Clamp(cnt / maxCnt, 0, 1);
+        _defectiveProductSlider.value = value;
+        _defectiveProductText.SetText($"{(int)(value * 100)}%");
+    }
+
+    public void RecognitionErrorQuantityDataUI(int cnt, int maxCnt)
+    {
+        _workQuantitySlider.value = (float)cnt / (float)maxCnt;
+        _workQuantityText.SetText($"오류:{cnt}/전체:{maxCnt}");
     }
 
     public void MachineInfoDataUI()

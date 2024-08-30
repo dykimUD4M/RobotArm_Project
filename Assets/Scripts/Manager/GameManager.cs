@@ -42,6 +42,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (IsPlayGame ==false) return;
         IsPlayGame = false;
+
         EventParam ep = new EventParam();
         ep.strParam = $"Stop {PLAY_MODE.ToString()}";
         EventManager.TriggerEvent(EventTrigger.EventType.Alarm, ep);
@@ -60,7 +61,8 @@ public class GameManager : Singleton<GameManager>
         EventManager.TriggerEvent(EventTrigger.EventType.Alarm, ep);
     }
 
-    public string LIVE_DATA = "";
+    public string LIVE_UI_DATA = "";
+    public string LIVE_ARM_DATA = "";
 
     private void Update()
     {
@@ -69,12 +71,11 @@ public class GameManager : Singleton<GameManager>
             PLAYTIME += Time.deltaTime;
             if (PLAY_MODE == RobotArmPlayMode.Live)
             {
-                LIVE_DATA = ClientManager.Instance.GetClientData(0);
-                Debug.Log(LIVE_DATA);
+                LIVE_UI_DATA = ClientManager.Instance.GetClientData(1);
+                LIVE_ARM_DATA = ClientManager.Instance.GetClientData(0);
+                Debug.Log(LIVE_UI_DATA);
             }
         }
-
-
     }
 
     public void Quit()
