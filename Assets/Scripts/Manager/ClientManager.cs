@@ -57,12 +57,12 @@ public class ClientManager : Singleton<ClientManager>
         uiIP.text = uiIPs[0];
         uiPort.text = uiIPs[1];
         armClient.InitClient(armIPs[0], int.Parse(armIPs[1]), () => { isReady_1 = true; }, ConnectFailed);
-        uiClient.InitClient(uiIPs[0], int.Parse(uiIPs[1]), () => { isReady_2 = true; }, ConnectFailed);
+        //uiClient.InitClient(uiIPs[0], int.Parse(uiIPs[1]), () => { isReady_2 = true; }, ConnectFailed);
         sr.Close();
     }
 
     bool isReady_1 = false;
-    bool isReady_2 = false;
+    bool isReady_2 = true;
 
     bool isNext = false;
     public void ReConnect()
