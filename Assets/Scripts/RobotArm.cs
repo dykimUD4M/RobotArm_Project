@@ -181,7 +181,7 @@ public class RobotArm : MonoBehaviour
 
                 if (num == 5)
                 {
-                    info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0, 90), moveTime);
+                    info.trm.DOLocalRotate(new Vector3(0, float.Parse(datas[num]) * 1 + axisOffsetValueList[num], 0), moveTime);
                 }
                 else
                     info.trm.DOLocalRotate(new Vector3(float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0, 0), moveTime);
@@ -192,7 +192,7 @@ public class RobotArm : MonoBehaviour
                 info.trm.DOLocalRotate(new Vector3(0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num], 0), moveTime);
             if (info.axis == "z")
                 if (num == 4)
-                    info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * 1 + axisOffsetValueList[num]), moveTime);
+                    info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num]), moveTime);
                 else
                     info.trm.DOLocalRotate(new Vector3(0, 0, float.Parse(datas[num]) * -1 + axisOffsetValueList[num]), moveTime);
         }

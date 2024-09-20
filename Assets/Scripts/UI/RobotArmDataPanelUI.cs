@@ -109,6 +109,11 @@ public class RobotArmDataPanelUI : MonoBehaviour
         }
     }
 
+    int workQunity = 0;
+    public void AddLiveWorkQuanity(int value)
+    {
+        GameManager.Instance.WorkQuanity += value;
+    }
     private void LiveDataSetting()
     {
         string[] datas = GameManager.Instance.LIVE_UI_DATA.Split(",");
@@ -117,6 +122,7 @@ public class RobotArmDataPanelUI : MonoBehaviour
 
         DataSetting(datas);
     }
+
 
     private void SimulationUIValue()
     {
@@ -131,10 +137,13 @@ public class RobotArmDataPanelUI : MonoBehaviour
         EnvironmentDataUI(float.Parse(datas[0]), float.Parse(datas[1]));
         PowerDataUI(float.Parse(datas[2]));
 
-        WorkQuantityDataUI(0, int.Parse(datas[3]));
+
+        WorkQuantityDataUI(GameManager.Instance.WorkQuanity, int.Parse(datas[3]));
         ErrorQuantityDataUI(int.Parse(datas[4]), int.Parse(datas[3]));
-        AcceptanceDataUI(0, 10);
-        DefectiveProductDataUI(0, 10);
+
+        AcceptanceDataUI(GameManager.Instance.WorkQuanity, int.Parse(datas[3]));
+        DefectiveProductDataUI(int.Parse(datas[4]), int.Parse(datas[3]));
+
         RecognitionErrorQuantityDataUI(int.Parse(datas[5]), int.Parse(datas[3]));
     }
 
@@ -175,6 +184,7 @@ public class RobotArmDataPanelUI : MonoBehaviour
     }
     public void AcceptanceDataUI(int cnt, int maxCnt)
     {
+        if (cnt > maxCnt || maxCnt == 0 || cnt == 0) return;
         float value = Mathf.Clamp(cnt / maxCnt, 0, 1);
         _acceptanceSlider.value = value;
         _acceptanceText.SetText($"{(int)(value * 100)}%");
@@ -182,6 +192,7 @@ public class RobotArmDataPanelUI : MonoBehaviour
 
     public void DefectiveProductDataUI(int cnt, int maxCnt)
     {
+        if (cnt > maxCnt || maxCnt == 0 || cnt == 0) return;
         float value = Mathf.Clamp(cnt / maxCnt, 0, 1);
         _defectiveProductSlider.value = value;
         _defectiveProductText.SetText($"{(int)(value * 100)}%");
@@ -189,8 +200,8 @@ public class RobotArmDataPanelUI : MonoBehaviour
 
     public void RecognitionErrorQuantityDataUI(int cnt, int maxCnt)
     {
-        _workQuantitySlider.value = (float)cnt / (float)maxCnt;
-        _workQuantityText.SetText($"오류:{cnt}/전체:{maxCnt}");
+        _recognitionErrorQuantitySlider.value = (float)cnt / (float)maxCnt;
+        _recognitionErrorQuantityText.SetText($"오류:{cnt}/전체:{maxCnt}");
     }
 
     public void MachineInfoDataUI()

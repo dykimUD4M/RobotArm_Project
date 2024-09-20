@@ -29,6 +29,8 @@ public class GameManager : Singleton<GameManager>
     public RobotArmPlayMode PLAY_MODE = RobotArmPlayMode.None;
     public bool IsPlayGame = false;
 
+    public int WorkQuanity { get; set; } = 0;
+
     public void StartBtn()
     {
         if (IsPlayGame) return;
@@ -55,6 +57,8 @@ public class GameManager : Singleton<GameManager>
         simulation_idx = 0;
         PLAYTIME = 0;
         IsPlayGame = false;
+
+        WorkQuanity = 0;
 
         EventParam ep = new EventParam();
         ep.strParam = $"Change Play Mode : {PLAY_MODE.ToString()}";
