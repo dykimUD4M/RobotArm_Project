@@ -125,14 +125,14 @@ public class RobotArm : MonoBehaviour
         if(isStart&&GameManager.Instance.PLAY_MODE == GameManager.RobotArmPlayMode.Live)
         {
             if (GameManager.Instance.LIVE_ARM_DATA == "") return;
-            string[] datas = GameManager.Instance.LIVE_ARM_DATA.Split(",");
+            string[] datas = GameManager.Instance.LIVE_ARM_DATA.Replace("(","").Replace(")","").Split(",");
             if (datas.Length <= 1) return;
 
             if (chatStr != GameManager.Instance.LIVE_ARM_DATA)
             {
                 chatStr = GameManager.Instance.LIVE_ARM_DATA;
                 _chatPanelUI.AddText(chatStr);
-                RotateRobotArm(GameManager.Instance.LIVE_ARM_DATA.Split(","), 0.1f);
+                RotateRobotArm(datas, 0.39f);
             }
         }
     }

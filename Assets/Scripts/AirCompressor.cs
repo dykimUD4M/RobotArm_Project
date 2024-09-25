@@ -63,6 +63,7 @@ public class AirCompressor : MonoBehaviour
         GameObject go = Instantiate(_spawnPhysicBall);
         go.transform.position = _pivot.position;
 
+
         Unequip();
     }
 
